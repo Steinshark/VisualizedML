@@ -51,7 +51,7 @@ Transformation done to the image by Ch1 in **Layer1** over 9 epochs of training.
 
 
 ### Layer2, Ch1 - Epoch 1-9
-Transformation done to the image by Ch1 in **Layer2** over 9 epochs of training. Note how much more Layer2 changes in training than Layer1  
+Transformation done to the image by Ch1 in **Layer2** over 9 epochs of training. Note how Layer2 changes more in training than Layer1  
 
 **Shape (per Ch): torch.Tensor->(1,256,256) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer2_ch1.jpg?raw=true)
@@ -62,3 +62,10 @@ Transformation done to the image by Ch1 in **Layer3** over 9 epochs of training.
 
 **Shape (per Ch): torch.Tensor->(1,128,128) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer3_ch1.jpg?raw=true)
+
+
+### Last Layer, Ch1 - Epoch 1-9
+Transformation done to the image by Ch1 in **Layer8** over 9 epochs of training. Huge changes
+
+**Shape (per Ch): torch.Tensor->(1,2,2) dtype=torch.float32**  
+![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer8_ch1.jpg?raw=true)

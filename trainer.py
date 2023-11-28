@@ -437,3 +437,11 @@ if __name__ == "__main__":
                 img_set.append(t.model.view_layer(img,3)[int(commands[1])])
             layer1_img  = t.to_pil_img(t.place_grid(img_set,nrow=math.ceil(math.sqrt(len(img_set))),bypass_numpy=True))
             layer1_img.save("Layer3_ch1.jpg")
+
+            #Save last epoch 
+            img_set     = [] 
+            for ep_i in range(t.epoch):
+                t.load_model(ep_i)
+                img_set.append(t.model.view_layer(img,8)[int(commands[1])])
+            layer1_img  = t.to_pil_img(t.place_grid(img_set,nrow=math.ceil(math.sqrt(len(img_set))),bypass_numpy=True))
+            layer1_img.save("Layer8_ch1.jpg")
