@@ -1,10 +1,11 @@
 # Visualizing Neural Networks
+This repo is a project of mine to visualize neural networks as they learn. I'm interested in the transformation of the image through each layer, as well as the kernels learned in each layer.
 
 ## The Problem: 
-    This model classifies screenshots of Battlefield4 by map. 
+This PyTorch model classifies screenshots of Battlefield4 by map 
 
 ## The Architecture: 
-    The model consists of 7 Conv2D layers of size 5 kernels, and 2 Linear layers. There are currently 6 BF4 maps: {Dawnbreaker,Floodzone,Silk Road,Siege of Shanghai,Lost Islands, Zavod 311}
+The model consists of 7 Conv2D layers of size 5 kernels, and 2 Linear layers. There are currently 6 BF4 maps: {Dawnbreaker,Floodzone,Silk Road,Siege of Shanghai,Lost Islands, Zavod 311}
 
 
 Base Image: 
