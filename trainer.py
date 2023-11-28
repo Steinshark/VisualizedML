@@ -404,7 +404,6 @@ if __name__ == "__main__":
             if len(commands) < 2:
                 commands.append("1")
             
-            print(f"{commands}")
             #Save base image 
             img         = ISLANDSIMG3
             base_img    = t.to_pil_img(img)
