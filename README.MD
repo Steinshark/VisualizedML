@@ -14,7 +14,7 @@ Currently, the following maps are part of the dataset:
 - Zavod 311
 
 ## The Architecture: 
-The model consists of 7 blocks of convolution layers, and 2 Linear layers
+The model consists of 7 blocks of convolution layers, and 2 blocks of linear layers
 Block:
 ```python
 self.layer_1    = torch.nn.Sequential(
@@ -23,11 +23,12 @@ self.layer_1    = torch.nn.Sequential(
             torch.nn.BatchNorm2d(16)
         )
 ```
-## The Output: 
-**Base Image:**   
-Shape: torch.Tensor->(3,512,512) float32  
+## The Input:    
+**Shape: torch.Tensor->(3,512,512) float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)
 
+## The Output: 
+Each image is 
 **Image through the 16 Channels in Layer1 of the Network.**  
 Shape: torch.Tensor->(16,512,512) float32  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ep0.jpg?raw=true)
