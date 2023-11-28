@@ -73,8 +73,8 @@ Transformation done to the image by Ch1 in **Layer8** over 9 epochs of training.
 ## The Output:
 
 - Dawnbreaker:0%
-- Floodzone: 93.6%
+- **Floodzone: 93.6%**
 - Silk Roead: 0%
 - Lost Islands: 6.3%
 - Siege of Shanghai: 0%
-- **Zavod 311: .1%**
+- Zavod 311: .1%
