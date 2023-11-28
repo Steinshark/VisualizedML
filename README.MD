@@ -32,7 +32,7 @@ self.linear_1   = torch.nn.Sequential(
 ```
 ## The Input:    
 **Shape: torch.Tensor->(3,512,512) float32**  
-![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)
+![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)  
 This map is Floodzone
 ## The Intermediate: 
 
