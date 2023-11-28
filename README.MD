@@ -23,7 +23,7 @@ self.layer_1    = torch.nn.Sequential(
             torch.nn.BatchNorm2d(16)
         )
 ```
-
+## The Output: 
 **Base Image:**   
 Shape: torch.Tensor->(3,512,512) float32  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)
