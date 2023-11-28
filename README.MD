@@ -77,4 +77,4 @@ Transformation done to the image by Ch1 in **Layer8** over 9 epochs of training.
 - Silk Roead: 0%
 - Lost Islands: 6.3%
 - Siege of Shanghai: 0%
-- Zavod 311: .1%
+- **Zavod 311: .1%**
