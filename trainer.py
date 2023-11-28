@@ -7,57 +7,76 @@ import random
 import time 
 import torchvision.utils
 import numpy 
+import os 
+import math
 
+
+
+GOODIMG1    = (torch.load("C:/data/battlefield/flood/flood3045.tsr") + 1) / 2 
+GOODIMG2    = (torch.load("C:/data/battlefield/flood/flood7933.tsr") + 1) / 2 
+GOODIMG3    = (torch.load("C:/data/battlefield/flood/flood2949.tsr") + 1) / 2 
+GOODIMG4    = (torch.load("C:/data/battlefield/flood/flood5109.tsr") + 1) / 2 
+
+GOBIIMG1    = (torch.load("C:/data/battlefield/gobi/gobi3312.tsr") + 1) / 2 
+GOBIIMG2    = (torch.load("C:/data/battlefield/gobi/gobi4412.tsr") + 1) / 2 
+GOBIIMG3    = (torch.load("C:/data/battlefield/gobi/gobi2587.tsr") + 1) / 2 
+GOBIIMG4    = (torch.load("C:/data/battlefield/gobi/gobi3044.tsr") + 1) / 2 
+
+SHANGIMG1    = (torch.load("C:/data/battlefield/shanghai/shanghai3458.tsr") + 1) / 2 
+SHANGIMG2    = (torch.load("C:/data/battlefield/shanghai/shanghai1376.tsr") + 1) / 2 
+SHANGIMG3    = (torch.load("C:/data/battlefield/shanghai/shanghai430.tsr") + 1) / 2 
+SHANGIMG4    = (torch.load("C:/data/battlefield/shanghai/shanghai1532.tsr") + 1) / 2 
+
+ZAVODIMG1    = (torch.load("C:/data/battlefield/zavod/zavod12727.tsr") + 1) / 2 
+ZAVODIMG2    = (torch.load("C:/data/battlefield/zavod/zavod2614.tsr") + 1) / 2 
+ZAVODIMG3    = (torch.load("C:/data/battlefield/zavod/zavod2465.tsr") + 1) / 2 
+ZAVODIMG4    = (torch.load("C:/data/battlefield/zavod/zavod14147.tsr") + 1) / 2 
+
+ISLANDSIMG1    = (torch.load("C:/data/battlefield/islands/islands4551.tsr") + 1) / 2 
+ISLANDSIMG2    = (torch.load("C:/data/battlefield/islands/islands7698.tsr") + 1) / 2 
+ISLANDSIMG3    = (torch.load("C:/data/battlefield/islands/islands1986.tsr") + 1) / 2 
+ISLANDSIMG4    = (torch.load("C:/data/battlefield/islands/islands9853.tsr") + 1) / 2 
+
+DAWNIMG1    = (torch.load("C:/data/battlefield/dawn/dawn6463.tsr") + 1) / 2 
+DAWNIMG2    = (torch.load("C:/data/battlefield/dawn/dawn18581.tsr") + 1) / 2 
+DAWNIMG3    = (torch.load("C:/data/battlefield/dawn/dawn13030.tsr") + 1) / 2 
+DAWNIMG4    = (torch.load("C:/data/battlefield/dawn/dawn19292.tsr") + 1) / 2 
+
+#Good is 3045,7933,2949,5109
 class imgDataSet(Dataset):
-
-    def __init__(self,data_dict:dict,n_iters=10,load_n=8):
+    
+    def __init__(self,path,load_n=8):
 
         self.data           = [] 
-        self.to_pil_img     = torchvision.transforms.ToPILImage()
 
-        self.labels         = list(set([d[0] for d in data_dict.values()]))
-
-        for path in data_dict:
-
-            for _ in range(n_iters):
-                label                   = self.labels.index(data_dict[path][0])
-                indices                 = random.choices(range(data_dict[path][1]),k=load_n)
-
-                for i in indices:
-                    tsr                     = torch.load(f"{path}{i}.tsr")
-                    label_p                 = torch.zeros(3)
-                    label_p[label]          = 1
-                    self.data.append([tsr[random.randint(0,29)],label_p])
+        #Find classes
+        self.classes        = os.listdir(path)
+        self.paths          = [(path+"/"+indv_class+"/"+indv_class).replace("//","/") for indv_class in self.classes]
         
+        for _ in range(load_n):
+            
+            #Load file 
+            base_path       = random.choice(self.paths)
+            classification  = base_path.split("/")[-1]
+            path            = "/".join(base_path.split("/")[:-1])
+            filename        = path + "/" + random.choice(os.listdir(path))
+            tensor          = torch.load(filename).type(torch.float16)
+
+            #Create class tensor 
+            class_t         = torch.zeros(len(self.paths),dtype=torch.float)
+            i               = self.classes.index(classification) 
+            class_t[i]      = 1
+
+            self.data.append([tensor,class_t])
 
 
-            # #Load the mp4 in chunks of 8
 
-            # for i in range(5000):
-                
-            #     if i % 100 == 0:
-            #         print(f"i={i}\n")
-            #     video       = torchvision.io.read_video(data_dict[path],pts_unit='sec',start_pts=i,end_pts=i+1,output_format="TCHW")[0]
-            #     video.requires_grad_(False)
-
-            #     if video.shape[0] == 1:
-            #         break 
-            #     else:
-
-            #         #Cut to 512x512
-            #         dims        = 512
-            #         h           = video.shape[2]
-            #         w           = video.shape[3]
-            #         w_start     = int(int(w/2) - int(dims/2))
-            #         h_start     = int(int(h/2) - int(dims/2))
-
-
-            #         video       = video[:,:,h_start:h_start+dims,w_start:w_start+dims]
-            #         torch.save(video,data_dict[path].replace(".mp4",f"/{i}.tsr"))
-            #         #print(f"\t{video.shape}")  
 
             
-
+                
+                
+                
+                
 
             
     def __len__(self):
@@ -68,28 +87,26 @@ class imgDataSet(Dataset):
 
 class Trainer:
 
+
     def __init__(self):
         self.device     = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
         self.epoch      = 0 
         self.loss_fn    = torch.nn.CrossEntropyLoss()
         self.losses     = {}    
+        self.percents   = []
         self.to_pil_img = torchvision.transforms.ToPILImage()
 
 
-    def select_model(self,lr=.0002):
-        self.model      = models.basicNet(n_classes=3).to(self.device)
+    def select_model(self,lr=.0001,n_classes=5):
+        self.model      = models.visNet(n_classes=n_classes).to(self.device)
         self.optimizer  = torch.optim.Adam(self.model.parameters(),lr=lr)
 
 
-    def select_dataset(self,n_iters=32,load_n=4):
-        self.dataset    = imgDataSet({
-                                        "C:/users/Steinshark/Pictures/training_data/flood/":("flood",333),
-                                        "C:/users/Steinshark/Pictures/training_data/gobi/":("gobi",521),
-                                        "C:/users/Steinshark/Pictures/training_data/shanghai/":("shanghai",524),
-                                      },
-                                      n_iters=n_iters,
-                                      load_n=load_n)
+    def select_dataset(self,load_n=4):
+        self.dataset    = imgDataSet("C:/data/battlefield/",load_n=load_n)
+        self.n_classes  = len(self.dataset.classes)
+        self.accuracies = torch.zeros(size=(self.n_classes,self.n_classes))
 
 
     def train_epoch(self,bs=16):
@@ -97,69 +114,74 @@ class Trainer:
         dataloader              = DataLoader(self.dataset,batch_size=bs,shuffle=True)
         self.losses[self.epoch] = []
 
+        #For printing 
+        num_equals 	    = 50 
+        printed 	    = 0
+        num_batches     = len(dataloader)
+        print(f"\t\t[",end='')
+
 
         for i,batch in enumerate(dataloader):   
-
+            
+            batch_acc   = torch.zeros(size=(self.n_classes,self.n_classes))
             #print(f"\t{i}/{len(dataloader)}")
+            percent     = i / num_batches
+
+            while (printed / num_equals) < percent:
+                    print("=",end='',flush=True)
+                    printed+=1
             
             #Zero grad 
-            for param in self.model.parameters():
-                param.grad  = None 
+            self.model.zero_grad() 
 
             #Load data
-            x               = batch[0].to(self.device).type(torch.float)
-            y               = batch[1].type(torch.LongTensor)
-            y               = y.type(torch.float).to(self.device)
+            x               = batch[0].to(self.device).type(torch.float32)
+            y               = batch[1].to(self.device).type(torch.float32)
+
+            real_indices    = torch.max(y,dim=1)[1]
 
             #Forward pass
             prediction      = self.model.forward(x)
 
+            pred_indices    = torch.max(prediction,dim=1)[1]
+
+            #print(f"y=\n{y}\n\npred=\n{prediction}\n\nmaxs=\n{pred_indices}")
+            for real_i,pred_i in zip(real_indices,pred_indices):
+                self.accuracies[real_i][pred_i] += 1
+                batch_acc[real_i][pred_i] += 1
+                #input(f"accuracies=\n{self.accuracies}")
             #Backward pass 
             loss            = self.loss_fn(prediction,y)
             loss.backward()
-            self.losses[self.epoch].append(loss.mean())
-            print(f"\tloss={sum(self.losses[self.epoch])/len(self.losses[self.epoch])}")
+            self.losses[self.epoch].append(loss.mean().detach().item())
+            batch_accuracy = (100*torch.sum(torch.diag(torch.ones(self.n_classes)) * batch_acc)/torch.sum(batch_acc)).detach().item() / 100
+            self.percents.append(batch_accuracy)
 
             #Step
             self.optimizer.step()
+
+        
+        correct                     = torch.diag(torch.ones(self.n_classes)) * self.accuracies
+        #self.percents.append(correct) 
+        print(f"]\tloss={sum(self.losses[self.epoch])/len(self.losses[self.epoch])}")
+        print(f"\t\taccuracy={100*torch.sum(correct)/torch.sum(self.accuracies):.2f}%")
+
         
 
         self.epoch += 1
 
 
-    def check_ch(self,ch_n,img,scale=1):
-
-        #Put image through layer1
-        img     = img.type(torch.float).to(t.device)
-        with torch.no_grad():
-            img     = self.model.conv1(img)[ch_n]
-
-        if scale:
-            img     = img - torch.min(img)
-            img     = img / torch.max(img)
-            img     = img * scale
-
-        img     = torch.stack([img,img,img])
-        #img     = self.to_pil_img(img)
-
-        return img 
-
-
-    def make_grid(self,img=torch.load("C:/users/steinshark/pictures/training_data/flood/176.tsr")[2]):
-        imgs        = [] 
-        base        = img.type(torch.float).to(t.device)
-
-        for i in range(16):
-            img     = self.check_ch(i,base)
-            imgs.append(img)
+    def layer_to_grid(self,img=GOODIMG2,layer=1,nrow=6):
+        base     = img.type(torch.float).to(t.device)
+        imgs     = self.model.view_layer(base,layer)
         
         imgs    = torch.stack(imgs)
-        grid    = torchvision.utils.make_grid(imgs,nrow=4).cpu().numpy()
+        grid    = torchvision.utils.make_grid(imgs,nrow=nrow).cpu().numpy()
         grid    = numpy.transpose(grid,(1,2,0))
         return grid
 
 
-    def place_grid(self,imgs,nrow=4):
+    def place_grid(self,imgs,nrow=6):
         imgs    = torch.stack(imgs)
         grid    = torchvision.utils.make_grid(imgs,nrow=nrow).cpu().numpy()
         grid    = numpy.transpose(grid,(1,2,0))
@@ -168,23 +190,150 @@ class Trainer:
 if __name__ == "__main__":
 
     t   = Trainer() 
-    t.select_model()
+    # while True:
+    #     rand_i  = random.randint(19000,20020)
+    #     img     = (torch.load(f"C:/data/battlefield/dawn/dawn{rand_i}.tsr") + 1) / 2 
+    #     img     = t.to_pil_img(img)
+    #     print(f"i={rand_i}")
+    #     plt.imshow(img)
+    #     plt.show()
 
-    imgs    = {}
 
-    for _ in range(9):
-        print(f"run epoch: {t.epoch}")
-        t.select_dataset(n_iters=32,load_n=4)
-        t.train_epoch(bs=4)
-        imgs[t.epoch]   = t.check_ch(0,torch.load("C:/users/steinshark/pictures/training_data/flood/176.tsr")[2])
+    t.select_model(lr=.0001,n_classes=6)
+    n_layers    = 8
+    dataset     = {l:[] for l in range(n_layers)}
+    loading     = 128
+    iters       = 1
+    bs          = 32
+    # t.select_dataset(load_n=loading)
+    # for _ in range(iters):
+    #     print(f"\trun epoch: {t.epoch}")
+    #     t.train_epoch(bs=bs)
+    #     imgs[0].append(t.model.view_layer(GOODIMG2,layer=1))
+    #     imgs[1].append(t.model.view_layer(GOODIMG2,layer=2))
+
     
 
-    #Get 16 ch
-    in_img  = torch.load("C:/users/steinshark/pictures/training_data/flood/176.tsr")[2].type(torch.float).to(t.device)
-    grid    = t.place_grid(list(imgs.values()),nrow=3)
-    plt.imshow(grid)
-    plt.title(f"Epochs: 0-9 -> class={t.model.forward(in_img)}")
-    plt.show()
 
+    while True:
+        command     = input(f"\nin <: ")
 
-    
+        commands    = command.split(" ")
+
+        if "epoch" in commands[0]:
+
+            if not len(commands) > 2:
+                print("format: epoch <epoch> <layer>")
+            else:
+                ep          = int(commands[1])
+                layer       = int(commands[2]) - 1
+
+                if not layer in dataset:
+                    print(f"layer '{layer}' is out of bounds for [0,{n_layers}]")
+                if ep > len(dataset[layer]):
+                    print(f"epoch '{ep}' is out of bounds for [0,{len(dataset[layer])}]")
+                else:
+                    img_set      = dataset[layer][ep]
+                    grid        = t.place_grid(img_set,nrow=math.ceil(math.sqrt(len(img_set))))
+                    plt.imshow(grid)
+                    plt.title(f"Ch. All, Ep. {ep}, Layer {layer}")
+                    plt.show()
+
+        elif "ch" in commands[0]:
+            if not len(commands) > 2:
+                print("format: ch <ch> <layer>")
+            else:
+                ch          = int(commands[1])
+                layer       = int(commands[2]) - 1
+
+                #Compile imgs 
+                img_set     = [epoch_snapshot[ch] for epoch_snapshot in dataset[layer] ]
+                grid    = t.place_grid(img_set,nrow=math.ceil(math.sqrt(len(img_set))))
+                plt.imshow(grid)
+                plt.title(f"Ch. {ch}, Ep. All, Layer {layer}")
+                plt.show()
+        
+        elif "exit" in commands[0] or "quit" in commands[0]:
+            exit()
+        
+        elif "train" in commands[0]:
+
+            if len(commands) > 1:
+                iters     = int(commands[1])
+
+            for _ in range(iters):
+                t.select_dataset(load_n=loading)
+                print(f"\ttrain epoch: {t.epoch}")
+                t.train_epoch(bs=bs)
+                for layer in range(n_layers):
+                    epoch_layer = t.model.view_layer(GOODIMG2,layer=layer+1)
+                    dataset[layer].append(epoch_layer)
+
+        elif "test" in commands[0]:
+            imgs    = [GOODIMG1,GOODIMG2,GOODIMG3,GOODIMG4,GOBIIMG1,GOBIIMG2,GOBIIMG3,GOBIIMG4,SHANGIMG1,SHANGIMG2,SHANGIMG3,SHANGIMG4,ZAVODIMG1,ZAVODIMG2,ZAVODIMG3,ZAVODIMG4]
+            imgs    = [img.type(torch.float) for img in imgs] 
+            random.shuffle(imgs)
+
+            #Send 4 at a time
+            for i in range(4):
+                start           = 4*i 
+                in_tsr          = torch.stack(imgs[start:start+4]).type(torch.float).to(t.device)
+                predictions     = t.model.forward(in_tsr)
+
+                torch.set_printoptions(sci_mode=False)
+                pred0           = [f"{k[:2]}:{100*p.item():.1f}%" for k,p in zip(t.dataset.classes,predictions[0])]
+                pred1           = [f"{k[:2]}:{100*p.item():.1f}%" for k,p in zip(t.dataset.classes,predictions[1])]
+                pred2           = [f"{k[:2]}:{100*p.item():.1f}%" for k,p in zip(t.dataset.classes,predictions[2])]
+                pred3           = [f"{k[:2]}:{100*p.item():.1f}%" for k,p in zip(t.dataset.classes,predictions[3])]
+
+                title           = f"Classes: {t.dataset.classes}\n{pred0}     {pred1}     {pred2}     {pred3}"
+
+                grid            = t.place_grid(imgs[start:start+4],nrow=4)
+                plt.imshow(grid)
+                plt.title(title)
+                plt.show()
+
+        elif "set" in commands[0]:
+
+            variable    = commands[1]
+            val         = commands[2]
+
+            if "iters" in variable:
+                iters     = int(val)
+            elif "loading" in variable:
+                loading     = int(val)
+            elif 'bs'   in variable:
+                bs          = int(val)
+            else:
+                print(f"\tno var found: '{variable}")
+            
+        elif "var" in commands[0]:
+            print(f"\tloading\t{loading}\n\titers\t{iters}\n\tbs\t{bs}")
+
+        elif "plot" in commands[0]:
+
+            if not len(commands) > 1:
+                print(f"format: plot <variable>")
+            else:
+                if "loss" in commands[1]:
+                    data    = sum(list(t.losses.values()),[])
+                    plt.plot(data,color='darkorange',label="loss")
+                    plt.legend()
+                    plt.title(f"Loss vs epoch")
+                    plt.show()
+                elif "accur" in commands[1]:
+                    data    = t.percents
+                    plt.plot(data,color='dodgerblue',label="accuracy")
+                    plt.legend()
+                    plt.title(f"Accuracy vs epoch")
+                    plt.show() 
+                elif 'both' in commands[1]:
+                    loss    = sum(list(t.losses.values()),[])
+                    accu    = t.percents
+                    plt.plot(loss,color='darkorange',label="loss")
+                    plt.plot(accu,color='dodgerblue',label="accuracy")
+                    plt.legend()
+                    plt.title("Accuracy and Loss vs epoch")
+                    plt.show()
+
+                
