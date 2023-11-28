@@ -4,7 +4,7 @@ This repo is a project of mine to visualize neural networks as they learn. I'm i
 - [ ] The kernels learned in each layer.
 
 ## The Problem: 
-This PyTorch model classifies screenshots of Battlefield4 by map 
+This PyTorch model classifies screenshots of Battlefield4 by map. 
 Currently, the following maps are part of the dataset:
 - Dawnbreaker
 - Floodzone
@@ -15,7 +15,9 @@ Currently, the following maps are part of the dataset:
 
 ## The Architecture: 
 The model consists of 7 Conv2D layers of size 5 kernels, and 2 Linear layers. There are currently 6 BF4 maps: {Dawnbreaker,Floodzone,Silk Road,Siege of Shanghai,Lost Islands, Zavod 311}
-
+'''
+Conv2d(3,16,kernel_size=5)
+'''
 
 Base Image: 
 Shape: torch.Tensor->(3,512,512) float32
