@@ -24,16 +24,14 @@ self.layer_1    = torch.nn.Sequential(
         )
 ```
 
-Base Image: 
-
+Base Image:  
 Shape: torch.Tensor->(3,512,512) float32
-
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)
 
-Visualization of the image after pass through each of the 16 Channels in Layer1 of the Network.
+Visualization of the image after pass through each of the 16 Channels in Layer1 of the Network.  
 Shape: torch.Tensor->(16,512,512) float32
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ep0.jpg?raw=true)
 
-Visualization of the image after pass through the 1st Channel through each training epoch
+Visualization of the image after pass through the 1st Channel through each training epoch  
 Shape: torch.Tensor->(1,512,512) float32
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ch1.jpg?raw=true)
