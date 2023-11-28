@@ -37,7 +37,7 @@ This map is Floodzone
 ## The Intermediate: 
 
 ### Layer1, Ch1-16: Epoch 9
-Shown here are the transformations done to the image by each of the 16 channels in Layer1. Yellow represents the most negative output, and Blue represents the most positive output.  
+Shown here are the transformations done to the image by each of the 16 channels in Layer1. Yellow represents degree of negative output, and Blue represents the positive output.  
 
 **Shape (per Ch): torch.Tensor->(1,512,512) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ep0.jpg?raw=true)
@@ -51,7 +51,7 @@ Transformation done to the image by Ch1 in **Layer1** over 9 epochs of training.
 
 
 ### Layer2, Ch1: Epoch 1-9
-Transformation done to the image by Ch1 in **Layer2** over 9 epochs of training. Note how Layer2 changes more in training than Layer1  
+Transformation done to the image by Ch1 in **Layer2** over 9 epochs of training. Layer2 changes more over training than Layer1.  
 
 **Shape (per Ch): torch.Tensor->(1,256,256) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer2_ch1.jpg?raw=true)
