@@ -104,12 +104,12 @@ class visNet(torch.nn.Module):
 
         super(visNet,self).__init__() 
 
-        self.conv_activation    = torch.nn.Tanh
-        self.lin_activation     = torch.nn.Tanh
+        self.conv_activation    = torch.nn.LeakyReLU
+        self.lin_activation     = torch.nn.ReLU
         self.device             = device
 
         self.layer_1    = torch.nn.Sequential(
-            torch.nn.Conv2d(in_channels=3,out_channels=16,kernel_size=k_size,stride=1,padding=int(k_size/2),bias=True),
+            torch.nn.Conv2d(in_channels=3,out_channels=16,kernel_size=k_size,stride=1,padding=int(k_size/2),bias=False),
             self.conv_activation(),
             torch.nn.BatchNorm2d(16)
         )

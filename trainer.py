@@ -66,7 +66,7 @@ img_list = {"flood1":FLOODIMG1,
 #Good is 3045,7933,2949,5109
 class imgDataSet(Dataset):
     
-    def __init__(self,path,load_n=8):
+    def __init__(self,path,load_n=8,save_mem=False):
 
         self.data           = [] 
 
@@ -405,7 +405,7 @@ if __name__ == "__main__":
                 commands.append("1")
             
             #Save base image 
-            img         = ISLANDSIMG3
+            img         = FLOODIMG2
             base_img    = t.to_pil_img(img)
             base_img.save("BaseImg.jpg")
 
