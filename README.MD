@@ -36,22 +36,29 @@ self.linear_1   = torch.nn.Sequential(
 
 ## The Output: 
 
-### Layer1,Ch1-16 - Epoch 9
+### Layer1, Ch1-16 - Epoch 9
 Shown here are the transformations done to the image by each of the 16 channels in Layer1. Red represents the most negative output, and Blue represents the most positive output.  
 
 **Shape (per Ch): torch.Tensor->(1,512,512) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ep0.jpg?raw=true)
 
 
-### Layer1,Ch1 - Epoch 1-9
+### Layer1, Ch1 - Epoch 1-9
 Transformation done to the image by Ch1 in **Layer1** through 9 epochs of training.  
 
 **Shape (per Ch): torch.Tensor->(1,512,512) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ch1.jpg?raw=true)
 
 
-### Layer2,Ch1 - Epoch 1-9
+### Layer2, Ch1 - Epoch 1-9
 Transformation done to the image by Ch1 in **Layer2** through 9 epochs of training. Note how much more Layer2 changes in training than Layer1  
 
 **Shape (per Ch): torch.Tensor->(1,512,512) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer2_ch1.jpg?raw=true)
+
+
+### Layer3, Ch1 - Epoch 1-9
+Transformation done to the image by Ch1 in **Layer3** through 9 epochs of training. Very pronounced changes
+
+**Shape (per Ch): torch.Tensor->(1,512,512) dtype=torch.float32**  
+![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer3_ch1.jpg?raw=true)
