@@ -18,8 +18,8 @@ The model consists of 7 blocks of convolution layers, and 2 Linear layers
 Block:
 ```python
 self.layer_1    = torch.nn.Sequential(
-            torch.nn.Conv2d(in_channels=3,out_channels=16,kernel_size=k_size,stride=1,padding=int(k_size/2),bias=True),
-            self.conv_activation(),
+            torch.nn.Conv2d(in_channels=3,out_channels=16,kernel_size=5,stride=1,padding=2,bias=True),
+            torch.nn.LeakyRelu(),
             torch.nn.BatchNorm2d(16)
         )
 ```
