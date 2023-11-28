@@ -104,8 +104,8 @@ class visNet(torch.nn.Module):
 
         super(visNet,self).__init__() 
 
-        self.conv_activation    = torch.nn.LeakyReLU
-        self.lin_activation     = torch.nn.LeakyReLU
+        self.conv_activation    = torch.nn.Tanh
+        self.lin_activation     = torch.nn.Tanh
         self.device             = device
 
         self.layer_1    = torch.nn.Sequential(
@@ -192,7 +192,7 @@ class visNet(torch.nn.Module):
         return x 
 
 
-    def view_layer(self,img:torch.Tensor,layer:int,negative_color=(236,48,7),positive_color=(16,137,246)):
+    def view_layer(self,img:torch.Tensor,layer:int,negative_color=(255,209,41),positive_color=(77,115,255)):
         
         if layer == 0:
             return [img.type(torch.float32).to(self.device) / torch.max(img)]

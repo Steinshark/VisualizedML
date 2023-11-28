@@ -19,7 +19,7 @@ The model consists of 7 blocks of convolution layers, and 2 blocks of linear lay
 ```python
 self.layer_1    = torch.nn.Sequential(
             torch.nn.Conv2d(in_channels=3,out_channels=16,kernel_size=5,stride=1,padding=2,bias=True),
-            torch.nn.LeakyRelu(),
+            torch.nn.Tanh(),
             torch.nn.BatchNorm2d(16)
         )
 ```  
@@ -27,7 +27,7 @@ self.layer_1    = torch.nn.Sequential(
 ```python
 self.linear_1   = torch.nn.Sequential(
             torch.nn.Linear(256*2*2,256),
-            torch.nn.LeakyRelu()
+            torch.nn.Tanh()
         )
 ```
 ## The Input:    
