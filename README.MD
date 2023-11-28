@@ -28,7 +28,6 @@ self.layer_1    = torch.nn.Sequential(
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)
 
 ## The Output: 
-Each image is 
 **Image through the 16 Channels in Layer1 of the Network.**  
 Shape: torch.Tensor->(16,512,512) float32  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ep0.jpg?raw=true)
