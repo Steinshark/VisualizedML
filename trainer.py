@@ -418,3 +418,12 @@ if __name__ == "__main__":
                 print(f"added img shape {img_set[-1].shape}")
             layer1_img  = t.to_pil_img(t.place_grid(img_set,nrow=math.ceil(math.sqrt(len(img_set))),bypass_numpy=True))
             layer1_img.save("Layer1_ch1.jpg")
+
+            #Save last epoch 
+            img_set     = [] 
+            for ep_i in range(t.epoch):
+                t.load_model(ep_i)
+                img_set.append(t.model.view_layer(img,2)[int(commands[1])])
+                print(f"added img shape {img_set[-1].shape}")
+            layer1_img  = t.to_pil_img(t.place_grid(img_set,nrow=math.ceil(math.sqrt(len(img_set))),bypass_numpy=True))
+            layer1_img.save("Layer2_ch1.jpg")
