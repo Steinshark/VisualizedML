@@ -28,7 +28,7 @@ self.layer_1    = torch.nn.Sequential(
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)
 
 ## The Output: 
-Each individual channel in the first layer is coded red at the most negative and blue at the most positive.
+Shown is the transformation to the image done by each of the 16 channels in Layer1. Red represents the most negative output, and Blue represents the most positive output.
 **Shape: torch.Tensor->(16,512,512) float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ep0.jpg?raw=true)
 
