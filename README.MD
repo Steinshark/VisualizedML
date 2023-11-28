@@ -67,7 +67,7 @@ Transformation done to the image by Ch1 in **Layer3** over 9 epochs of training.
 ### Last Layer, Ch1: Epoch 1-9
 Transformation done to the image by Ch1 in **Layer8** over 9 epochs of training. Huge changes
 
-**Shape (per Ch): torch.Tensor->(1,2,2) dtype=torch.float32**  
+**Shape (per Ch): torch.Tensor->(1,4,4) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer8_ch1.jpg?raw=true)
 
 ## The Output:
