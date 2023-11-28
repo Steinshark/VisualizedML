@@ -34,7 +34,7 @@ self.linear_1   = torch.nn.Sequential(
 **Shape: torch.Tensor->(3,512,512) float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)
 
-## The Output: 
+## The Intermediate: 
 
 ### Layer1, Ch1-16: Epoch 9
 Shown here are the transformations done to the image by each of the 16 channels in Layer1. Yellow represents the most negative output, and Blue represents the most positive output.  
@@ -69,3 +69,12 @@ Transformation done to the image by Ch1 in **Layer8** over 9 epochs of training.
 
 **Shape (per Ch): torch.Tensor->(1,2,2) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer8_ch1.jpg?raw=true)
+
+## The Output:
+
+- Dawnbreaker:0%
+- Floodzone: 93.6%
+- Silk Roead: 0%
+- Lost Islands: 6.3%
+- Siege of Shanghai: 0%
+- Zavod 311: .1%
