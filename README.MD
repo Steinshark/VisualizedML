@@ -28,11 +28,13 @@ self.layer_1    = torch.nn.Sequential(
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)
 
 ## The Output: 
-Shown are the transformations to the image done by each of the 16 channels in Layer1. Red represents the most negative output, and Blue represents the most positive output.  
+Shown are the transformations done to the image by each of the 16 channels in Layer1. Red represents the most negative output, and Blue represents the most positive output.  
 
 **Shape: torch.Tensor->(16,512,512) float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ep0.jpg?raw=true)
 
-**Image through the 1st Channel through each training epoch**  
-Shape: torch.Tensor->(1,512,512) float32  
+
+Below is the transformation done to the image by Ch1 in Layer1 through 9 epochs of training.  
+
+**Shape: torch.Tensor->(1,512,512) float32(())**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ch1.jpg?raw=true)
