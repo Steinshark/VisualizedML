@@ -7,7 +7,7 @@ The Architecture: The model consists of 7 Conv2D layers of size 5 kernels, and 2
 
 Base Image: 
 Shape: torch.Tensor->(3,512,512) float32
-![alt text](https://github.com/steinshark/VisualizedML/main/BaseImg.jpg?raw=true)
+![alt text](https://github.com/steinshark/VisualizedML/blob/main/BaseImg.jpg?raw=true)
 
 Visualization of all 16 First Layer channel outputs
 Shape: torch.Tensor->(16,512,512) float32
