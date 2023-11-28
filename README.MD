@@ -14,4 +14,4 @@ Shape: torch.Tensor->(16,512,512) float32
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ep0.jpg?raw=true)
 
 Visualization of First Layer, First channel, epoch 0-9 
-![alt text](https://github.com/steinshark/VisualizedML/main/blob/Layer1_ch1.jpg?raw=true)
+![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ch1.jpg?raw=true)

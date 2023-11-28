@@ -405,6 +405,7 @@ if __name__ == "__main__":
             base_img    = t.to_pil_img(img)
             base_img.save("BaseImg.jpg")
 
+
             #Save layer 1 
             layer1_img  = t.to_pil_img(t.place_grid(t.model.view_layer(img,1),nrow=4,bypass_numpy=True))
             layer1_img.save("Layer1_ep0.jpg")
