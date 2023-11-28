@@ -176,6 +176,7 @@ class visNet(torch.nn.Module):
         self.layers     = [self.layer_1,self.layer_2,self.layer_3,self.layer_4,self.layer_5,self.layer_6,self.layer_7,self.layer_8]
         self.to(self.device)
     
+
     def forward(self,x:torch.Tensor)->torch.Tensor:
 
         x               = self.layer_1(x)
@@ -192,6 +193,9 @@ class visNet(torch.nn.Module):
 
 
     def view_layer(self,img:torch.Tensor,layer:int,negative_color=(236,48,7),positive_color=(16,137,246)):
+        
+        if layer == 0:
+            return [img.type(torch.float32).to(self.device) / torch.max(img)]
         
         with torch.no_grad():
             

@@ -12,35 +12,56 @@ import math
 
 
 
-GOODIMG1    = (torch.load("C:/data/battlefield/flood/flood3045.tsr") + 1) / 2 
-GOODIMG2    = (torch.load("C:/data/battlefield/flood/flood7933.tsr") + 1) / 2 
-GOODIMG3    = (torch.load("C:/data/battlefield/flood/flood2949.tsr") + 1) / 2 
-GOODIMG4    = (torch.load("C:/data/battlefield/flood/flood5109.tsr") + 1) / 2 
-
+FLOODIMG1    = (torch.load("C:/data/battlefield/flood/flood3045.tsr") + 1) / 2 
+FLOODIMG2    = (torch.load("C:/data/battlefield/flood/flood7933.tsr") + 1) / 2 
+FLOODIMG3    = (torch.load("C:/data/battlefield/flood/flood2949.tsr") + 1) / 2 
+FLOODIMG4    = (torch.load("C:/data/battlefield/flood/flood5109.tsr") + 1) / 2 
 GOBIIMG1    = (torch.load("C:/data/battlefield/gobi/gobi3312.tsr") + 1) / 2 
 GOBIIMG2    = (torch.load("C:/data/battlefield/gobi/gobi4412.tsr") + 1) / 2 
 GOBIIMG3    = (torch.load("C:/data/battlefield/gobi/gobi2587.tsr") + 1) / 2 
 GOBIIMG4    = (torch.load("C:/data/battlefield/gobi/gobi3044.tsr") + 1) / 2 
-
 SHANGIMG1    = (torch.load("C:/data/battlefield/shanghai/shanghai3458.tsr") + 1) / 2 
 SHANGIMG2    = (torch.load("C:/data/battlefield/shanghai/shanghai1376.tsr") + 1) / 2 
 SHANGIMG3    = (torch.load("C:/data/battlefield/shanghai/shanghai430.tsr") + 1) / 2 
 SHANGIMG4    = (torch.load("C:/data/battlefield/shanghai/shanghai1532.tsr") + 1) / 2 
-
 ZAVODIMG1    = (torch.load("C:/data/battlefield/zavod/zavod12727.tsr") + 1) / 2 
 ZAVODIMG2    = (torch.load("C:/data/battlefield/zavod/zavod2614.tsr") + 1) / 2 
 ZAVODIMG3    = (torch.load("C:/data/battlefield/zavod/zavod2465.tsr") + 1) / 2 
 ZAVODIMG4    = (torch.load("C:/data/battlefield/zavod/zavod14147.tsr") + 1) / 2 
-
 ISLANDSIMG1    = (torch.load("C:/data/battlefield/islands/islands4551.tsr") + 1) / 2 
 ISLANDSIMG2    = (torch.load("C:/data/battlefield/islands/islands7698.tsr") + 1) / 2 
 ISLANDSIMG3    = (torch.load("C:/data/battlefield/islands/islands1986.tsr") + 1) / 2 
 ISLANDSIMG4    = (torch.load("C:/data/battlefield/islands/islands9853.tsr") + 1) / 2 
-
 DAWNIMG1    = (torch.load("C:/data/battlefield/dawn/dawn6463.tsr") + 1) / 2 
 DAWNIMG2    = (torch.load("C:/data/battlefield/dawn/dawn18581.tsr") + 1) / 2 
 DAWNIMG3    = (torch.load("C:/data/battlefield/dawn/dawn13030.tsr") + 1) / 2 
 DAWNIMG4    = (torch.load("C:/data/battlefield/dawn/dawn19292.tsr") + 1) / 2 
+
+
+img_list = {"flood1":FLOODIMG1,
+            "flood2":FLOODIMG2,
+            "flood3":FLOODIMG3,
+            "flood4":FLOODIMG4,
+            "gobi1":GOBIIMG1,
+            "gobi2":GOBIIMG2,
+            "gobi3":GOBIIMG3,
+            "gobi4":GOBIIMG4,
+            "shanghai1":SHANGIMG1,
+            "shanghai2":SHANGIMG2,
+            "shanghai3":SHANGIMG3,
+            "shanghai4":SHANGIMG4,
+            "zavod1":ZAVODIMG1,
+            "zavod2":ZAVODIMG2,
+            "zavod3":ZAVODIMG3,
+            "zavod4":ZAVODIMG4,
+            "islands1":ISLANDSIMG1,
+            "islands2":ISLANDSIMG2,
+            "islands3":ISLANDSIMG3,
+            "islands4":ISLANDSIMG4,
+            "dawn1":DAWNIMG1,
+            "dawn2":DAWNIMG2,
+            "dawn3":DAWNIMG3,
+            "dawn4":DAWNIMG4}
 
 #Good is 3045,7933,2949,5109
 class imgDataSet(Dataset):
@@ -171,7 +192,7 @@ class Trainer:
         self.epoch += 1
 
 
-    def layer_to_grid(self,img=GOODIMG2,layer=1,nrow=6):
+    def layer_to_grid(self,img=FLOODIMG2,layer=1,nrow=6):
         base     = img.type(torch.float).to(t.device)
         imgs     = self.model.view_layer(base,layer)
         
@@ -181,11 +202,34 @@ class Trainer:
         return grid
 
 
-    def place_grid(self,imgs,nrow=6):
+    def place_grid(self,imgs,nrow=6,bypass_numpy=False):
         imgs    = torch.stack(imgs)
         grid    = torchvision.utils.make_grid(imgs,nrow=nrow).cpu().numpy()
+
+        if bypass_numpy:
+            return torch.from_numpy(grid)
+
         grid    = numpy.transpose(grid,(1,2,0))
         return grid
+
+
+    def store_model(self,store_path="model_ckpts",late=True):
+        
+        #Create if non-existent 
+        if not os.path.isdir(store_path):
+            os.mkdir(store_path)
+        
+        #Save model there 
+        torch.save(self.model.state_dict(),f"{store_path}/model_ckpt_{self.epoch - 1 if late else 0}.mdl")
+
+
+    def load_model(self,epoch,store_path="model_ckpts"):
+        self.model.load_state_dict(torch.load(f"{store_path}/model_ckpt_{epoch}.mdl"))
+
+
+    def get_n_epochs(self,store_path="model_ckpts"):
+        return len(os.listdir(store_path))
+
 
 if __name__ == "__main__":
 
@@ -209,8 +253,8 @@ if __name__ == "__main__":
     # for _ in range(iters):
     #     print(f"\trun epoch: {t.epoch}")
     #     t.train_epoch(bs=bs)
-    #     imgs[0].append(t.model.view_layer(GOODIMG2,layer=1))
-    #     imgs[1].append(t.model.view_layer(GOODIMG2,layer=2))
+    #     imgs[0].append(t.model.view_layer(FLOODIMG2,layer=1))
+    #     imgs[1].append(t.model.view_layer(FLOODIMG2,layer=2))
 
     
 
@@ -221,19 +265,26 @@ if __name__ == "__main__":
         commands    = command.split(" ")
 
         if "epoch" in commands[0]:
-
+            
+            #Ensure proper command
             if not len(commands) > 2:
                 print("format: epoch <epoch> <layer>")
             else:
                 ep          = int(commands[1])
-                layer       = int(commands[2]) - 1
+                layer       = int(commands[2])
+                img         = img_list[commands[3] if len(commands) > 3 and commands[3] in img_list else 'flood2']
 
-                if not layer in dataset:
-                    print(f"layer '{layer}' is out of bounds for [0,{n_layers}]")
-                if ep > len(dataset[layer]):
-                    print(f"epoch '{ep}' is out of bounds for [0,{len(dataset[layer])}]")
+                if layer > len(t.model.layers):
+                    print(f"layer '{layer}' is out of bounds for [0,{len(t.model.layers)}]")
+                if ep > t.epoch-1:
+                    print(f"epoch '{ep}' is out of bounds for [0,{t.epoch-1}]")
                 else:
-                    img_set      = dataset[layer][ep]
+
+                    #Load corresponding epoch
+                    t.load_model(ep)
+                    img_set     = t.model.view_layer(img,layer)
+
+                    #Grid and view
                     grid        = t.place_grid(img_set,nrow=math.ceil(math.sqrt(len(img_set))))
                     plt.imshow(grid)
                     plt.title(f"Ch. All, Ep. {ep}, Layer {layer}")
@@ -244,10 +295,19 @@ if __name__ == "__main__":
                 print("format: ch <ch> <layer>")
             else:
                 ch          = int(commands[1])
-                layer       = int(commands[2]) - 1
+                layer       = int(commands[2])
+                img         = img_list[commands[3] if len(commands) > 3 and commands[3] in img_list else 'flood2']
+
+                if layer > len(t.model.layers):
+                    print(f"layer '{layer}' is out of bounds for [0,{len(t.model.layers)}]")
 
                 #Compile imgs 
-                img_set     = [epoch_snapshot[ch] for epoch_snapshot in dataset[layer] ]
+                img_set     = [] 
+                for ep_i in range(t.epoch):
+                    t.load_model(ep_i)
+                    img_set.append(t.model.view_layer(img,layer)[ch])
+
+                #Grid and view
                 grid    = t.place_grid(img_set,nrow=math.ceil(math.sqrt(len(img_set))))
                 plt.imshow(grid)
                 plt.title(f"Ch. {ch}, Ep. All, Layer {layer}")
@@ -266,11 +326,13 @@ if __name__ == "__main__":
                 print(f"\ttrain epoch: {t.epoch}")
                 t.train_epoch(bs=bs)
                 for layer in range(n_layers):
-                    epoch_layer = t.model.view_layer(GOODIMG2,layer=layer+1)
+                    epoch_layer = t.model.view_layer(FLOODIMG2,layer=layer+1)
                     dataset[layer].append(epoch_layer)
+                
+                t.store_model()
 
         elif "test" in commands[0]:
-            imgs    = [GOODIMG1,GOODIMG2,GOODIMG3,GOODIMG4,GOBIIMG1,GOBIIMG2,GOBIIMG3,GOBIIMG4,SHANGIMG1,SHANGIMG2,SHANGIMG3,SHANGIMG4,ZAVODIMG1,ZAVODIMG2,ZAVODIMG3,ZAVODIMG4]
+            imgs    = [FLOODIMG1,FLOODIMG2,FLOODIMG3,FLOODIMG4,GOBIIMG1,GOBIIMG2,GOBIIMG3,GOBIIMG4,SHANGIMG1,SHANGIMG2,SHANGIMG3,SHANGIMG4,ZAVODIMG1,ZAVODIMG2,ZAVODIMG3,ZAVODIMG4]
             imgs    = [img.type(torch.float) for img in imgs] 
             random.shuffle(imgs)
 
@@ -336,4 +398,22 @@ if __name__ == "__main__":
                     plt.title("Accuracy and Loss vs epoch")
                     plt.show()
 
-                
+        elif 'save' in commands[0]:
+
+            #Save base image 
+            img         = ISLANDSIMG3
+            base_img    = t.to_pil_img(img)
+            base_img.save("BaseImg.jpg")
+
+            #Save layer 1 
+            layer1_img  = t.to_pil_img(t.place_grid(t.model.view_layer(img,1),nrow=4,bypass_numpy=True))
+            layer1_img.save("Layer1_ep0.jpg")
+
+            #Save last epoch 
+            img_set     = [] 
+            for ep_i in range(t.epoch):
+                t.load_model(ep_i)
+                img_set.append(t.model.view_layer(img,1)[1])
+                print(f"added img shape {img_set[-1].shape}")
+            layer1_img  = t.to_pil_img(t.place_grid(img_set,nrow=math.ceil(math.sqrt(len(img_set))),bypass_numpy=True))
+            layer1_img.save("Layer1_ch1.jpg")
