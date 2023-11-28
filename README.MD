@@ -1,5 +1,7 @@
 # Visualizing Neural Networks
-This repo is a project of mine to visualize neural networks as they learn. I'm interested in the transformation of the image through each layer, as well as the kernels learned in each layer.
+This repo is a project of mine to visualize neural networks as they learn. I'm interested in tracking:
+[ ] The transformation of the image through each layer
+[ ] The kernels learned in each layer.
 
 ## The Problem: 
 This PyTorch model classifies screenshots of Battlefield4 by map 
