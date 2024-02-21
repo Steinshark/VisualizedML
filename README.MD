@@ -37,7 +37,7 @@ This map is Floodzone
 ## The Intermediate: 
 
 ### Layer1, Ch1-16: Epoch 9
-Shown here are the transformations done to the image by each of the 16 channels in Layer1. Yellow represents degree of negative output, and Blue represents the positive output.  
+Shown here are the outputs of passing the original, 3-channel image into each of the 16 'filters' in Layer1. Yellow represents degree of negative output, and Blue represents the positive output.  
 
 **Shape (per Ch): torch.Tensor->(1,512,512) dtype=torch.float32**  
 ![alt text](https://github.com/steinshark/VisualizedML/blob/main/Layer1_ep0.jpg?raw=true)

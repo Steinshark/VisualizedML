@@ -104,8 +104,8 @@ class visNet(torch.nn.Module):
 
         super(visNet,self).__init__() 
 
-        self.conv_activation    = torch.nn.LeakyReLU
-        self.lin_activation     = torch.nn.ReLU
+        self.conv_activation    = torch.nn.Tanh
+        self.lin_activation     = torch.nn.LeakyReLU
         self.device             = device
 
         self.layer_1    = torch.nn.Sequential(

@@ -121,7 +121,7 @@ class Trainer:
 
     def select_model(self,lr=.0001,n_classes=5):
         self.model      = models.visNet(n_classes=n_classes).to(self.device)
-        self.optimizer  = torch.optim.Adam(self.model.parameters(),lr=lr)
+        self.optimizer  = torch.optim.Adam(self.model.parameters(),lr=lr,weight_decay=lr/10,betas=(.75,.9999))
 
 
     def select_dataset(self,load_n=4):
@@ -243,10 +243,10 @@ if __name__ == "__main__":
     #     plt.show()
 
 
-    t.select_model(lr=.0001,n_classes=6)
+    t.select_model(lr=.00005,n_classes=6)
     n_layers    = 8
     dataset     = {l:[] for l in range(n_layers)}
-    loading     = 128
+    loading     = 1024
     iters       = 1
     bs          = 32
     # t.select_dataset(load_n=loading)
